@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    ports:
+      - '3306:3306'
+    networks:
+      - alura-net
+      
+networks:
+  mesttra-net:
+    driver: bridge
+    name: alura-net
