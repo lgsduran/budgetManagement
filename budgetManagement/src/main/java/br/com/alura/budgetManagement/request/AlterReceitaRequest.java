@@ -12,14 +12,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.alura.budgetManagement.entity.Receitas;
-import br.com.alura.budgetManagement.enums.DescricaoReceitas;
+import br.com.alura.budgetManagement.enums.DescricaoReceitasType;
 import lombok.Data;
 
 @Data
 public class AlterReceitaRequest {
 	
 	@Enumerated(EnumType.STRING)
-	private DescricaoReceitas descricao;
+	private DescricaoReceitasType descricao;
 	
 	@NotNull(message = "Field must not be null.")
 	private Double valor;

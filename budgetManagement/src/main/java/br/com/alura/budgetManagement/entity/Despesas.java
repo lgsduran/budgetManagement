@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import br.com.alura.budgetManagement.enums.DescricaoDespesas;
+import br.com.alura.budgetManagement.enums.DescricaoDespesasType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,7 +33,7 @@ public class Despesas {
 	@Enumerated(EnumType.STRING)
 	@NotNull(message = "Field must not be null.")
 	@NotEmpty(message = "Field must not be empty.")
-	private DescricaoDespesas descricao;
+	private DescricaoDespesasType descricao;
 	
 	@NotNull(message = "Field must not be null.")
 	@NotEmpty(message = "Field must not be empty.")

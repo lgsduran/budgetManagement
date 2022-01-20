@@ -15,7 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.alura.budgetManagement.enums.DescricaoReceitas;
+import br.com.alura.budgetManagement.enums.DescricaoReceitasType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,7 +31,7 @@ public class Receitas {
 	private long id;
 	
 	@Enumerated(EnumType.STRING)
-	private DescricaoReceitas descricao;
+	private DescricaoReceitasType descricao;
 	
 	private Double valor;
 	

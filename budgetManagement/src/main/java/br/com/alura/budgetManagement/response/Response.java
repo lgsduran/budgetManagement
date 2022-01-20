@@ -1,11 +1,23 @@
 package br.com.alura.budgetManagement.response;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Getter;
 
-@AllArgsConstructor
+@Getter
 public class Response {
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	private String code;
+	private String message;
+
+	public Response(String message) {
+		this.message = message;
+	}
 	
-	private @Getter String message;
+	public Response(String code, String message) {
+		this.code = code;
+		this.message = message;
+	}
 
 }

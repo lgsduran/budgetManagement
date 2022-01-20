@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.alura.budgetManagement.entity.Receitas;
-import br.com.alura.budgetManagement.enums.DescricaoReceitas;
+import br.com.alura.budgetManagement.enums.DescricaoReceitasType;
 
 public interface ReceitasRepository extends JpaRepository<Receitas, Long> {
 
-	List<Receitas> findAllByDescricao(DescricaoReceitas descricao);
+	List<Receitas> findAllByDescricao(DescricaoReceitasType descricao);
 
 	
-	Boolean existsByDescricao(DescricaoReceitas receita);
+	Boolean existsByDescricao(DescricaoReceitasType receita);
 
 }

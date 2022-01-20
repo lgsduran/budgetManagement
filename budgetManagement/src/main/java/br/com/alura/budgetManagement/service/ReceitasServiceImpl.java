@@ -3,6 +3,7 @@ package br.com.alura.budgetManagement.service;
 import static java.lang.String.format;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
@@ -29,13 +30,15 @@ public class ReceitasServiceImpl implements IReceitasService {
 
 	@Override
 	public Receitas addReceita(AddReceitaRequest request) throws BusinessException {
-		Optional<Receitas> mes = this.receitasRepository.
+		Predicate<Receitas> month = x -> x.getData().getMonthValue() == request.getData().getMonthValue();
+        Predicate<Receitas> year = x -> x.getData().getYear() ==  request.getData().getYear();
+		Optional<Receitas> descricao = this.receitasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
-				.filter(d -> d.getData().getMonthValue() == request.getData().getMonthValue())
+				.filter(month.and(year))
 				.findFirst();
 		
-		if (mes.isPresent())
+		if (descricao.isPresent())
 			throw new BusinessException(format("Month %s already taken.", request.getData().getMonth()));
 		
 		log.info("Receita added successfully.");

@@ -5,14 +5,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum DescricaoDespesas {
+public enum DescricaoReceitasType {
 	
-	ALUGUEL("ALUGUEL"),
-	PRESTACAO_CARRO("PRESTACAO_CARRO"),
-	AGUA("AGUA"),
-	LUZ("LUZ"),
-	INTERNET("INTERNET"),
-	CELULAR("CELULAR");	
+	SALARIO("SALARIO"),
+	RENDA_EXTRA("RENDA_EXTRA"),
+	OUTROS("OUTROS");	
 	
 	private final String value;
 
