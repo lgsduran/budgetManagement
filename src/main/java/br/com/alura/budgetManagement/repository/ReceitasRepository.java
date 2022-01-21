@@ -11,7 +11,4 @@ public interface ReceitasRepository extends JpaRepository<Receitas, Long> {
 
 	List<Receitas> findAllByDescricao(DescricaoReceitasType descricao);
 
-	
-	Boolean existsByDescricao(DescricaoReceitasType receita);
-
 }

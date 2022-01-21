@@ -16,52 +16,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.alura.budgetManagement.entity.Receitas;
+import br.com.alura.budgetManagement.entity.Despesas;
 import br.com.alura.budgetManagement.exception.BusinessException;
-import br.com.alura.budgetManagement.request.AddReceitaRequest;
-import br.com.alura.budgetManagement.request.AlterReceitaRequest;
+import br.com.alura.budgetManagement.request.AddDespesaRequest;
+import br.com.alura.budgetManagement.request.AlterDespesaRequest;
 import br.com.alura.budgetManagement.response.Response;
-import br.com.alura.budgetManagement.service.ReceitasServiceImpl;
+import br.com.alura.budgetManagement.service.DespesasServiceImpl;
 
 @RestController
-@RequestMapping("/receitas")
-public class ReceitasController {
+@RequestMapping("/despesas")
+public class DespesasController {
 	
-	private ReceitasServiceImpl receitasService;
+	private DespesasServiceImpl despesasService;
 
-	public ReceitasController(ReceitasServiceImpl receitasService) {
-		this.receitasService = receitasService;
+	public DespesasController(DespesasServiceImpl despesasService) {
+		this.despesasService = despesasService;
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Receitas	addReceitas(@Valid @RequestBody AddReceitaRequest request) 
+	public Despesas	addDespesas(@Valid @RequestBody AddDespesaRequest request) 
 			throws BusinessException {
-		return this.receitasService.addReceita(request);		
+		return this.despesasService.addDespesas(request);		
 	}
 	
 	@GetMapping
-	public Page<Receitas> listReceitas(@Valid  @PageableDefault Pageable pageable) {
-		return this.receitasService.listReceitas(pageable);
+	public Page<Despesas> listDespesas(@Valid  @PageableDefault Pageable pageable) {
+		return this.despesasService.listDespesas(pageable);
 	}
 	
 	@GetMapping("/{id}")
-	public Receitas getReceitaById(@Valid  @PathVariable long id) 
+	public Despesas getDespesaById(@Valid  @PathVariable long id) 
 			throws BusinessException {
-		return this.receitasService.getReceitaById(id);
+		return this.despesasService.getDespesasById(id);
 	}
 	
 	@PutMapping("/{id}")
-    public Receitas alterOpponent(@PathVariable Long id,
-                                  @RequestBody AlterReceitaRequest request) 
+    public Despesas alterDespesas(@PathVariable Long id,
+                                  @RequestBody AlterDespesaRequest request) 
                                 		  throws BusinessException {
-        return this.receitasService.alterReceita(id, request);
+        return this.despesasService.alterDespesa(id, request);
     }
 	
 	@DeleteMapping("/{id}")
 	public Response deleteReceita(@PathVariable long id) 
 			throws BusinessException {
-		return this.receitasService.deleteReceita(id);
+		return this.despesasService.deleteDespesa(id);
 
 	}
 	

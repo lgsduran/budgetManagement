@@ -10,10 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.alura.budgetManagement.enums.DescricaoDespesasType;
 import lombok.Data;
@@ -31,17 +31,12 @@ public class Despesas {
 	private long id;
 	
 	@Enumerated(EnumType.STRING)
-	@NotNull(message = "Field must not be null.")
-	@NotEmpty(message = "Field must not be empty.")
 	private DescricaoDespesasType descricao;
 	
-	@NotNull(message = "Field must not be null.")
-	@NotEmpty(message = "Field must not be empty.")
 	private Double valor;
 	
-	@NotNull(message = "Field must not be null.")
-	@NotEmpty(message = "Field must not be empty.")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate data;	
 
 }
