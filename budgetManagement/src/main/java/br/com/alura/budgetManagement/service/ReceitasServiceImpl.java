@@ -30,12 +30,11 @@ public class ReceitasServiceImpl implements IReceitasService {
 
 	@Override
 	public Receitas addReceita(AddReceitaRequest request) throws BusinessException {
-		Predicate<Receitas> month = x -> x.getData().getMonthValue() == request.getData().getMonthValue();
-        Predicate<Receitas> year = x -> x.getData().getYear() ==  request.getData().getYear();
 		Optional<Receitas> descricao = this.receitasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
-				.filter(month.and(year))
+				.filter(isMonthSaved(request.getData().getMonthValue())
+						.and(isYearSaved(request.getData().getYear())))
 				.findFirst();
 		
 		if (descricao.isPresent())
@@ -53,25 +52,27 @@ public class ReceitasServiceImpl implements IReceitasService {
 	@Override
 	public Receitas getReceitaById(long id) throws BusinessException {
 		return this.receitasRepository.findById(id)
-			      .orElseThrow(() -> new BusinessException(format("Id %s not found.", id)));
+			      .orElseThrow(() -> new BusinessException(format("Id %s was not found.", id)));
 	}
 
 	@Override
 	public Receitas alterReceita(Long id, AlterReceitaRequest request) throws BusinessException {
-		Optional<Receitas> mes = this.receitasRepository.
+		Optional<Receitas> descricao = this.receitasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
-				.filter(d -> d.getData().getMonthValue() == request.getData().getMonthValue())
+				.filter(isMonthSaved(request.getData().getMonthValue())
+						.and(isYearSaved(request.getData().getYear())))
 				.findFirst();
 		
-		if (mes.isPresent())
+		if (descricao.isPresent())
 			throw new BusinessException(format("Month %s already taken.", request.getData().getMonth()));
 		
 		 Optional<Receitas> receitaDB = Stream.of(id)
 				      .map(this.receitasRepository::findById)
-				      .filter(r -> r != null)
-				      .findFirst()
-				      .orElseThrow(() -> new BusinessException(format("Id %s not found.", id)));
+				      .findFirst().get();
+		 
+		 if (receitaDB.isEmpty()) 
+			 throw new BusinessException(format("Id %s was not found.", id));				      
 		 
 		 Receitas receita = request.changeReceita(receitaDB.get());
 		 log.info("Receita updated successfully.");
@@ -81,10 +82,18 @@ public class ReceitasServiceImpl implements IReceitasService {
 	@Override
 	public Response deleteReceita(long id) throws BusinessException {
 		Receitas receita = this.receitasRepository.findById(id)
-					      .orElseThrow(() -> new BusinessException(format("Id %s not found.", id)));
+					      .orElseThrow(() -> new BusinessException(format("Id %s was not found.", id)));
 		
 		this.receitasRepository.delete(receita);
 		return new Response("Register deleted successfully.");
+	}
+	
+	private Predicate<Receitas> isMonthSaved(int monthValue) {
+	    return x -> x.getData().getMonthValue() == monthValue;
+	}
+	
+	private Predicate<Receitas> isYearSaved(int yearValue) {
+	    return x -> x.getData().getYear() == yearValue;
 	}
 
 }
