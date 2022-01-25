@@ -1,5 +1,9 @@
 package br.com.alura.budgetManagement.controller;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +43,13 @@ public class ReceitasController {
 	public Receitas	addReceitas(@Valid @RequestBody AddReceitaRequest request) 
 			throws BusinessException {
 		return this.receitasService.addReceita(request);		
+	}
+	
+	
+	@RequestMapping(value = "/descricao", method = GET)
+	public List<Receitas> listReceitasByDescricao(@Valid  @RequestParam("descricao") 
+			String descricao) throws BusinessException {
+		return this.receitasService.listReceitasByDescricao(descricao);
 	}
 	
 	@GetMapping

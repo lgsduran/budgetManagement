@@ -1,5 +1,7 @@
 package br.com.alura.budgetManagement.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,7 +14,7 @@ import br.com.alura.budgetManagement.response.Response;
 public interface IReceitasService {
 
 	Receitas addReceita(AddReceitaRequest request) throws BusinessException;
-
+	
 	Page<Receitas> listReceitas(Pageable pageable);
 
 	Receitas getReceitaById(long id) throws BusinessException;
@@ -22,4 +24,7 @@ public interface IReceitasService {
 
 	Response deleteReceita(long id) throws BusinessException;
 
+	List<Receitas> listReceitasByDescricao(String descricao)
+			throws BusinessException;
+	
 }

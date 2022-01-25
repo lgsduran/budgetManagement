@@ -1,7 +1,10 @@
 package br.com.alura.budgetManagement.service;
 
+import static br.com.alura.budgetManagement.enums.CategoriaType.OUTRAS;
 import static java.lang.String.format;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.budgetManagement.entity.Receitas;
+import br.com.alura.budgetManagement.enums.DescricaoReceitasType;
 import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.repository.ReceitasRepository;
 import br.com.alura.budgetManagement.request.AddReceitaRequest;
@@ -39,6 +43,9 @@ public class ReceitasServiceImpl implements IReceitasService {
 		
 		if (descricao.isPresent())
 			throw new BusinessException(format("Month %s already taken.", request.getData().getMonth()));
+		
+		if (request.getCategoria() == null)
+			request.setCategoria(OUTRAS);
 		
 		log.info("Receita added successfully.");
 		return receitasRepository.save(request.toEntity());
@@ -87,6 +94,7 @@ public class ReceitasServiceImpl implements IReceitasService {
 		this.receitasRepository.delete(receita);
 		return new Response("Register deleted successfully.");
 	}
+
 	
 	private Predicate<Receitas> isMonthSaved(int monthValue) {
 	    return x -> x.getData().getMonthValue() == monthValue;
@@ -96,4 +104,20 @@ public class ReceitasServiceImpl implements IReceitasService {
 	    return x -> x.getData().getYear() == yearValue;
 	}
 
+	@Override
+	public List<Receitas> listReceitasByDescricao(String descricao) throws BusinessException {
+		DescricaoReceitasType valueResult = null;
+		EnumSet<DescricaoReceitasType> values = EnumSet.allOf(DescricaoReceitasType.class);
+		for (DescricaoReceitasType value : values) {
+			if (value.getValue().equalsIgnoreCase(descricao))
+				valueResult = value;
+		}
+
+		if (valueResult == null)
+			throw new BusinessException(format("Descricao %s was not found.", descricao));
+
+		return Optional.of(this.receitasRepository.findAllByDescricao(valueResult)).get();
+				
+		
+	}
 }
