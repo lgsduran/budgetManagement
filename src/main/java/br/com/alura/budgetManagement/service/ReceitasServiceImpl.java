@@ -116,7 +116,7 @@ public class ReceitasServiceImpl implements IReceitasService {
 		if (valueResult == null)
 			throw new BusinessException(format("Descricao %s was not found.", descricao));
 
-		return Optional.of(this.receitasRepository.findAllByDescricao(valueResult)).get();
+		return this.receitasRepository.findAllByDescricao(valueResult);
 				
 		
 	}
