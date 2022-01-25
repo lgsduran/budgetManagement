@@ -2,6 +2,7 @@ package br.com.alura.budgetManagement.service;
 
 import static br.com.alura.budgetManagement.enums.CategoriaType.OUTRAS;
 import static java.lang.String.format;
+import static java.util.EnumSet.allOf;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -106,17 +107,16 @@ public class ReceitasServiceImpl implements IReceitasService {
 
 	@Override
 	public List<Receitas> listReceitasByDescricao(String descricao) throws BusinessException {
-		DescricaoReceitasType valueResult = null;
-		EnumSet<DescricaoReceitasType> values = EnumSet.allOf(DescricaoReceitasType.class);
-		for (DescricaoReceitasType value : values) {
-			if (value.getValue().equalsIgnoreCase(descricao))
-				valueResult = value;
+		DescricaoReceitasType typeResult = null;
+		for (DescricaoReceitasType type : allOf(DescricaoReceitasType.class)) {
+			if (type.getValue().equalsIgnoreCase(descricao))
+				typeResult = type;
 		}
 
-		if (valueResult == null)
+		if (typeResult == null)
 			throw new BusinessException(format("Descricao %s was not found.", descricao));
 
-		return this.receitasRepository.findAllByDescricao(valueResult);
+		return this.receitasRepository.findAllByDescricao(typeResult);
 				
 		
 	}
