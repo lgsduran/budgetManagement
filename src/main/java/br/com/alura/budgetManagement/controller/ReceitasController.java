@@ -52,11 +52,10 @@ public class ReceitasController {
 		return this.receitasService.listReceitasByDescricao(descricao);
 	}
 	
-
-	@GetMapping("/{ano}/{mes}")
-	public List<Receitas> listReceitasByAnoMes(@Valid  @PathVariable 
-			int ano, @PathVariable int mes) throws BusinessException {
-		return this.receitasService.listReceitasByAnosMes(ano, mes);
+	@GetMapping("/{year}/{month}")
+	public List<Receitas> listReceitasByYearMonth(@Valid  @PathVariable 
+			int year, @PathVariable int month) throws BusinessException {
+		return this.receitasService.listReceitasByYearMonth(year, month);
 	}
 	
 	@GetMapping

@@ -26,5 +26,8 @@ public interface IDespesasService {
 	
 	List<Despesas> listDespesasByDescricao(String descricao)
 			throws BusinessException;
+	
+	List<Despesas> listDespesasByYearMonth(int year, int month)
+			throws BusinessException;
 
 }

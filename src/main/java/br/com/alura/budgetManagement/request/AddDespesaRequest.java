@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.alura.budgetManagement.entity.Despesas;
+import br.com.alura.budgetManagement.enums.CategoriaType;
 import br.com.alura.budgetManagement.enums.DescricaoDespesasType;
 import lombok.Data;
 
@@ -28,6 +29,9 @@ public class AddDespesaRequest {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate data;	
+	
+	@Enumerated(EnumType.STRING)
+	private CategoriaType categoria;
 	
 	public Despesas toEntity() {
 		Despesas despesas = new Despesas();

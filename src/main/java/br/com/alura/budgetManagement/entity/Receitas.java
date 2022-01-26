@@ -15,7 +15,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.alura.budgetManagement.enums.CategoriaType;
 import br.com.alura.budgetManagement.enums.DescricaoReceitasType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,8 +38,5 @@ public class Receitas {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate data;	
-	
-	@Enumerated(EnumType.STRING)
-	private CategoriaType categoria;
 
 }

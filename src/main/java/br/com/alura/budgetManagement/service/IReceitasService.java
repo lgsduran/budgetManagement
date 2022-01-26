@@ -27,7 +27,7 @@ public interface IReceitasService {
 	List<Receitas> listReceitasByDescricao(String descricao)
 			throws BusinessException;
 	
-	List<Receitas> listReceitasByAnosMes(int ano, int mes)
+	List<Receitas> listReceitasByYearMonth(int year, int month)
 			throws BusinessException;
 	
 }

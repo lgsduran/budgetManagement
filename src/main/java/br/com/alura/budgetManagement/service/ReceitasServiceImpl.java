@@ -1,6 +1,5 @@
 package br.com.alura.budgetManagement.service;
 
-import static br.com.alura.budgetManagement.enums.CategoriaType.OUTRAS;
 import static java.lang.String.format;
 import static java.util.EnumSet.allOf;
 
@@ -44,9 +43,6 @@ public class ReceitasServiceImpl implements IReceitasService {
 		
 		if (descricao.isPresent())
 			throw new BusinessException(format("Month %s already taken.", request.getData().getMonth()));
-		
-		if (request.getCategoria() == null)
-			request.setCategoria(OUTRAS);
 		
 		log.info("Receita added successfully.");
 		return receitasRepository.save(request.toEntity());
@@ -111,7 +107,7 @@ public class ReceitasServiceImpl implements IReceitasService {
 	}
 	
 	@Override
-	public List<Receitas> listReceitasByAnosMes(int year, int month) throws BusinessException {
+	public List<Receitas> listReceitasByYearMonth(int year, int month) throws BusinessException {
 		List<Receitas> results = this.receitasRepository.findAll();
 		
 		List<Receitas> resultYear = results.stream()

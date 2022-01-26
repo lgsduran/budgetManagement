@@ -51,6 +51,12 @@ public class DespesasController {
 		return this.despesasService.listDespesasByDescricao(descricao);
 	}
 	
+	@GetMapping("/{year}/{month}")
+	public List<Despesas> listReceitasByYearMonth(@Valid  @PathVariable 
+			int year, @PathVariable int month) throws BusinessException {
+		return this.despesasService.listDespesasByYearMonth(year, month);
+	}
+	
 	@GetMapping
 	public Page<Despesas> listDespesas(@Valid  @PageableDefault Pageable pageable) {
 		return this.despesasService.listDespesas(pageable);
