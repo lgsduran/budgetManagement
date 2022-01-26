@@ -52,6 +52,13 @@ public class ReceitasController {
 		return this.receitasService.listReceitasByDescricao(descricao);
 	}
 	
+
+	@GetMapping("/{ano}/{mes}")
+	public List<Receitas> listReceitasByAnoMes(@Valid  @PathVariable 
+			int ano, @PathVariable int mes) throws BusinessException {
+		return this.receitasService.listReceitasByAnosMes(ano, mes);
+	}
+	
 	@GetMapping
 	public Page<Receitas> listReceitas(@Valid  @PageableDefault Pageable pageable) {
 		return this.receitasService.listReceitas(pageable);

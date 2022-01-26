@@ -7,6 +7,7 @@ import static java.util.EnumSet.allOf;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
@@ -109,6 +110,27 @@ public class ReceitasServiceImpl implements IReceitasService {
 		return this.receitasRepository.findAllByDescricao(typeResult);		
 	}
 	
+	@Override
+	public List<Receitas> listReceitasByAnosMes(int year, int month) throws BusinessException {
+		List<Receitas> results = this.receitasRepository.findAll();
+		
+		List<Receitas> resultYear = results.stream()
+			   .filter(x -> x.getData().getYear() == year)
+			   .collect(Collectors.toList());
+		
+		if (resultYear.isEmpty())
+			throw new BusinessException(format("Year %s was not found.", year));
+		
+		List<Receitas> resultMonth = resultYear.stream()
+				   .filter(x -> x.getData().getMonthValue() == month)
+				   .collect(Collectors.toList());
+		
+		if (resultMonth.isEmpty())
+			throw new BusinessException(format("Month %s was not found.", month));
+		
+		return resultMonth;		
+	}
+	
 	private Predicate<Receitas> isMonthSaved(int monthValue) {
 	    return x -> x.getData().getMonthValue() == monthValue;
 	}
@@ -116,5 +138,6 @@ public class ReceitasServiceImpl implements IReceitasService {
 	private Predicate<Receitas> isYearSaved(int yearValue) {
 	    return x -> x.getData().getYear() == yearValue;
 	}
+
 
 }
