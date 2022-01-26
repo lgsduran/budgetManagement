@@ -1,11 +1,15 @@
 package br.com.alura.budgetManagement.controller;
 
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,10 +39,16 @@ public class DespesasController {
 	}
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus(CREATED)
 	public Despesas	addDespesas(@Valid @RequestBody AddDespesaRequest request) 
 			throws BusinessException {
 		return this.despesasService.addDespesas(request);		
+	}	
+	
+	@RequestMapping(value = "/descricao", method=GET)
+	public List<Despesas> listDespesasByDescricao(@Valid  @RequestParam("descricao") 
+			String descricao) throws BusinessException {
+		return this.despesasService.listDespesasByDescricao(descricao);
 	}
 	
 	@GetMapping

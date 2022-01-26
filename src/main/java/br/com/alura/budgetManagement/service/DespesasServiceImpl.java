@@ -1,7 +1,9 @@
 package br.com.alura.budgetManagement.service;
 
 import static java.lang.String.format;
+import static java.util.EnumSet.allOf;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.budgetManagement.entity.Despesas;
+import br.com.alura.budgetManagement.enums.DescricaoDespesasType;
 import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.repository.DespesasRepository;
 import br.com.alura.budgetManagement.request.AddDespesaRequest;
@@ -88,6 +91,20 @@ public class DespesasServiceImpl implements IDespesasService {
 		return new Response("Register deleted successfully.");
 	}
 	
+	@Override
+	public List<Despesas> listDespesasByDescricao(String descricao) throws BusinessException {
+		DescricaoDespesasType typeResult = null;
+		for (DescricaoDespesasType type : allOf(DescricaoDespesasType.class)) {
+			if (type.getValue().equalsIgnoreCase(descricao))
+				typeResult = type;
+		}
+		
+		if (typeResult == null)
+			throw new BusinessException(format("Descricao %s was not found.", descricao));
+		
+		return this.despesasRepository.findAllByDescricao(typeResult);		
+	}
+	
 	private Predicate<Despesas> isMonthSaved(int monthValue) {
 	    return x -> x.getData().getMonthValue() == monthValue;
 	}
@@ -95,5 +112,6 @@ public class DespesasServiceImpl implements IDespesasService {
 	private Predicate<Despesas> isYearSaved(int yearValue) {
 	    return x -> x.getData().getYear() == yearValue;
 	}
+
 
 }

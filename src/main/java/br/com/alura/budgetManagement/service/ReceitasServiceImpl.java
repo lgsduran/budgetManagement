@@ -95,6 +95,19 @@ public class ReceitasServiceImpl implements IReceitasService {
 		return new Response("Register deleted successfully.");
 	}
 
+	@Override
+	public List<Receitas> listReceitasByDescricao(String descricao) throws BusinessException {
+		DescricaoReceitasType typeResult = null;
+		for (DescricaoReceitasType type : allOf(DescricaoReceitasType.class)) {
+			if (type.getValue().equalsIgnoreCase(descricao))
+				typeResult = type;
+		}
+		
+		if (typeResult == null)
+			throw new BusinessException(format("Descricao %s was not found.", descricao));
+		
+		return this.receitasRepository.findAllByDescricao(typeResult);		
+	}
 	
 	private Predicate<Receitas> isMonthSaved(int monthValue) {
 	    return x -> x.getData().getMonthValue() == monthValue;
@@ -104,19 +117,4 @@ public class ReceitasServiceImpl implements IReceitasService {
 	    return x -> x.getData().getYear() == yearValue;
 	}
 
-	@Override
-	public List<Receitas> listReceitasByDescricao(String descricao) throws BusinessException {
-		DescricaoReceitasType typeResult = null;
-		for (DescricaoReceitasType type : allOf(DescricaoReceitasType.class)) {
-			if (type.getValue().equalsIgnoreCase(descricao))
-				typeResult = type;
-		}
-
-		if (typeResult == null)
-			throw new BusinessException(format("Descricao %s was not found.", descricao));
-
-		return this.receitasRepository.findAllByDescricao(typeResult);
-				
-		
-	}
 }

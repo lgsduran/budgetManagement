@@ -1,5 +1,7 @@
 package br.com.alura.budgetManagement.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,5 +23,8 @@ public interface IDespesasService {
 			throws BusinessException;
 
 	Response deleteDespesa(long id) throws BusinessException;
+	
+	List<Despesas> listDespesasByDescricao(String descricao)
+			throws BusinessException;
 
 }
