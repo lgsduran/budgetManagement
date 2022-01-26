@@ -52,7 +52,7 @@ public class DespesasController {
 	}
 	
 	@GetMapping("/{year}/{month}")
-	public List<Despesas> listReceitasByYearMonth(@Valid  @PathVariable 
+	public List<Despesas> listDespesasByYearMonth(@Valid  @PathVariable 
 			int year, @PathVariable int month) throws BusinessException {
 		return this.despesasService.listDespesasByYearMonth(year, month);
 	}
