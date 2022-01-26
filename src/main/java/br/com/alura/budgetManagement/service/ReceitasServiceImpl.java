@@ -5,7 +5,6 @@ import static java.util.EnumSet.allOf;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import br.com.alura.budgetManagement.entity.Receitas;
 import br.com.alura.budgetManagement.enums.DescricaoReceitasType;
 import br.com.alura.budgetManagement.exception.BusinessException;
+import br.com.alura.budgetManagement.helpers.SupplierHelp;
 import br.com.alura.budgetManagement.repository.ReceitasRepository;
 import br.com.alura.budgetManagement.request.AddReceitaRequest;
 import br.com.alura.budgetManagement.request.AlterReceitaRequest;
@@ -25,6 +25,8 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Service
 public class ReceitasServiceImpl implements IReceitasService {
+	
+	private SupplierHelp sh = new SupplierHelp();
 	
 	private ReceitasRepository receitasRepository;	
 
@@ -37,8 +39,8 @@ public class ReceitasServiceImpl implements IReceitasService {
 		Optional<Receitas> descricao = this.receitasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
-				.filter(isMonthSaved(request.getData().getMonthValue())
-						.and(isYearSaved(request.getData().getYear())))
+				.filter(sh.isMonthSavedReceita(request.getData().getMonthValue())
+						.and(sh.isYearSavedReceita(request.getData().getYear())))
 				.findFirst();
 		
 		if (descricao.isPresent())
@@ -64,8 +66,8 @@ public class ReceitasServiceImpl implements IReceitasService {
 		Optional<Receitas> descricao = this.receitasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
-				.filter(isMonthSaved(request.getData().getMonthValue())
-						.and(isYearSaved(request.getData().getYear())))
+				.filter(sh.isMonthSavedReceita(request.getData().getMonthValue())
+						.and(sh.isYearSavedReceita(request.getData().getYear())))
 				.findFirst();
 		
 		if (descricao.isPresent())
@@ -127,13 +129,7 @@ public class ReceitasServiceImpl implements IReceitasService {
 		return resultMonth;		
 	}
 	
-	private Predicate<Receitas> isMonthSaved(int monthValue) {
-	    return x -> x.getData().getMonthValue() == monthValue;
-	}
-	
-	private Predicate<Receitas> isYearSaved(int yearValue) {
-	    return x -> x.getData().getYear() == yearValue;
-	}
+
 
 
 }

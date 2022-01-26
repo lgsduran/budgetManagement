@@ -6,7 +6,6 @@ import static java.util.EnumSet.allOf;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,9 +14,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.budgetManagement.entity.Despesas;
+import br.com.alura.budgetManagement.entity.Receitas;
 import br.com.alura.budgetManagement.enums.DescricaoDespesasType;
 import br.com.alura.budgetManagement.exception.BusinessException;
+import br.com.alura.budgetManagement.helpers.SupplierHelp;
 import br.com.alura.budgetManagement.repository.DespesasRepository;
+import br.com.alura.budgetManagement.repository.ReceitasRepository;
 import br.com.alura.budgetManagement.request.AddDespesaRequest;
 import br.com.alura.budgetManagement.request.AlterDespesaRequest;
 import br.com.alura.budgetManagement.response.Response;
@@ -27,19 +29,24 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class DespesasServiceImpl implements IDespesasService {
 	
-	private DespesasRepository despesasRepository;	
+	private SupplierHelp sh = new SupplierHelp();
+	
+	private DespesasRepository despesasRepository;
+	private ReceitasRepository receitasRepository;	
 
-	public DespesasServiceImpl(DespesasRepository despesasRepository) {
+	public DespesasServiceImpl(DespesasRepository despesasRepository, ReceitasRepository receitasRepository) {
 		this.despesasRepository = despesasRepository;
+		this.receitasRepository = receitasRepository;
 	}
 
 	@Override
 	public Despesas addDespesas(AddDespesaRequest request) throws BusinessException {
+		
 		Optional<Despesas> descricao = this.despesasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
-				.filter(isMonthSaved(request.getData().getMonthValue())
-						.and(isYearSaved(request.getData().getYear())))
+				.filter(sh.isMonthSavedDespesa(request.getData().getMonthValue())
+						.and(sh.isYearSavedDespesa(request.getData().getYear())))
 				.findFirst();
 		
 		if (descricao.isPresent())
@@ -47,6 +54,29 @@ public class DespesasServiceImpl implements IDespesasService {
 		
 		if (request.getCategoria() == null)
 			request.setCategoria(OUTRAS);
+		
+		List<Receitas> receitas = receitasRepository.findAll()
+			.stream()
+			.filter(sh.isMonthSavedReceita(request.getData().getMonthValue())
+			.and(sh.isYearSavedReceita(request.getData().getYear())))
+			.collect(Collectors.toList());
+		
+		double totalReceitas = 0;
+		for (Receitas receita : receitas) 
+			totalReceitas = totalReceitas + receita.getValor();
+		
+		List<Despesas> despesas = despesasRepository.findAll()
+				.stream()
+				.filter(sh.isMonthSavedDespesa(request.getData().getMonthValue())
+				.and(sh.isYearSavedDespesa(request.getData().getYear())))
+				.collect(Collectors.toList());
+			
+			double totalDespesas = 0;
+			for (Despesas despesa : despesas) 
+				totalDespesas = totalDespesas + despesa.getValor();
+		
+		if (totalReceitas <= request.getValor() || totalDespesas >= totalReceitas)
+			throw new BusinessException(format("Despesas' total amount must be less than %s.", totalReceitas));	
 		
 		log.info("Receita added successfully.");
 		return despesasRepository.save(request.toEntity());
@@ -68,8 +98,8 @@ public class DespesasServiceImpl implements IDespesasService {
 		Optional<Despesas> descricao = this.despesasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
-				.filter(isMonthSaved(request.getData().getMonthValue())
-						.and(isYearSaved(request.getData().getYear())))
+				.filter(sh.isMonthSavedDespesa(request.getData().getMonthValue())
+						.and(sh.isYearSavedDespesa(request.getData().getYear())))
 				.findFirst();
 		
 		if (descricao.isPresent())
@@ -130,14 +160,4 @@ public class DespesasServiceImpl implements IDespesasService {
 		
 		return resultMonth;		
 	}	
-	
-	private Predicate<Despesas> isMonthSaved(int monthValue) {
-	    return x -> x.getData().getMonthValue() == monthValue;
-	}
-	
-	private Predicate<Despesas> isYearSaved(int yearValue) {
-	    return x -> x.getData().getYear() == yearValue;
-	}
-
-
 }
