@@ -3,10 +3,13 @@ package br.com.alura.budgetManagement.response;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import br.com.alura.budgetManagement.enums.CategoriaType;
 import lombok.Data;
 
 @Data
+@JsonPropertyOrder(alphabetic = false)
 public class ResumoResponse {
 	
 	private Double Valor_total_das_receitas_no_mes;
