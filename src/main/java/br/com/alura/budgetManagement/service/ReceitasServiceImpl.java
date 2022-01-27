@@ -128,8 +128,4 @@ public class ReceitasServiceImpl implements IReceitasService {
 		
 		return resultMonth;		
 	}
-	
-
-
-
 }

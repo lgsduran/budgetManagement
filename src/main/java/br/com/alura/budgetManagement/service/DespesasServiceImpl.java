@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.budgetManagement.entity.Despesas;
-import br.com.alura.budgetManagement.entity.Receitas;
 import br.com.alura.budgetManagement.enums.DescricaoDespesasType;
 import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.helpers.SupplierHelp;
@@ -40,8 +39,7 @@ public class DespesasServiceImpl implements IDespesasService {
 	}
 
 	@Override
-	public Despesas addDespesas(AddDespesaRequest request) throws BusinessException {
-		
+	public Despesas addDespesas(AddDespesaRequest request) throws BusinessException {		
 		Optional<Despesas> descricao = this.despesasRepository.
 				findAllByDescricao(request.getDescricao())
 				.stream()
@@ -55,27 +53,21 @@ public class DespesasServiceImpl implements IDespesasService {
 		if (request.getCategoria() == null)
 			request.setCategoria(OUTRAS);
 		
-		List<Receitas> receitas = receitasRepository.findAll()
-			.stream()
-			.filter(sh.isMonthSavedReceita(request.getData().getMonthValue())
-			.and(sh.isYearSavedReceita(request.getData().getYear())))
-			.collect(Collectors.toList());
+		Double totalReceitas = sh.getAmount(receitasRepository.findAll(),
+				sh.isMonthSavedReceita(request.getData().getMonthValue())
+						.and(sh.isYearSavedReceita(request.getData().getYear())),
+				x -> x.getValor());
 		
-		double totalReceitas = 0;
-		for (Receitas receita : receitas) 
-			totalReceitas = totalReceitas + receita.getValor();
+		if (totalReceitas <= request.getValor())
+			throw new BusinessException(format("Despesa amount s% must be less than %s.", 
+					request.getValor(), totalReceitas));	
 		
-		List<Despesas> despesas = despesasRepository.findAll()
-				.stream()
-				.filter(sh.isMonthSavedDespesa(request.getData().getMonthValue())
-				.and(sh.isYearSavedDespesa(request.getData().getYear())))
-				.collect(Collectors.toList());
-			
-			double totalDespesas = 0;
-			for (Despesas despesa : despesas) 
-				totalDespesas = totalDespesas + despesa.getValor();
+		Double totalDespesas = sh.getAmount(despesasRepository.findAll(),
+				sh.isMonthSavedDespesa(request.getData().getMonthValue())
+						.and(sh.isYearSavedDespesa(request.getData().getYear())),
+				x -> x.getValor());
 		
-		if (totalReceitas <= request.getValor() || totalDespesas >= totalReceitas)
+		if (totalDespesas >= totalReceitas)
 			throw new BusinessException(format("Despesas' total amount must be less than %s.", totalReceitas));	
 		
 		log.info("Receita added successfully.");
@@ -104,6 +96,23 @@ public class DespesasServiceImpl implements IDespesasService {
 		
 		if (descricao.isPresent())
 			throw new BusinessException(format("Month %s already taken.", request.getData().getMonth()));
+		
+		Double totalReceitas = sh.getAmount(receitasRepository.findAll(),
+				sh.isMonthSavedReceita(request.getData().getMonthValue())
+						.and(sh.isYearSavedReceita(request.getData().getYear())),
+				x -> x.getValor());
+		
+		if (totalReceitas <= request.getValor())
+			throw new BusinessException(format("Despesa amount s% must be less than %s.", 
+					request.getValor(), totalReceitas));	
+		
+		Double totalDespesas = sh.getAmount(despesasRepository.findAll(),
+				sh.isMonthSavedDespesa(request.getData().getMonthValue())
+						.and(sh.isYearSavedDespesa(request.getData().getYear())),
+				x -> x.getValor());
+		
+		if (totalDespesas >= totalReceitas)
+			throw new BusinessException(format("Despesas' total amount must be less than %s.", totalReceitas));	
 		
 		 Optional<Despesas> despesaDB = Stream.of(id)
 				      .map(this.despesasRepository::findById)
