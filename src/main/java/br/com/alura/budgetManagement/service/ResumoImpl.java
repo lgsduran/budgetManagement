@@ -19,6 +19,7 @@ import br.com.alura.budgetManagement.response.ResumoResponse;
 public class ResumoImpl implements IResumo {
 	
 	private SupplierHelp sh = new SupplierHelp();
+	private ResumoResponse resumo = new ResumoResponse();
 	
 	private DespesasRepository despesasRepository;
 	private ReceitasRepository receitasRepository;	
@@ -30,7 +31,6 @@ public class ResumoImpl implements IResumo {
 
 	@Override
 	public ResumoResponse generateResumo(int year, int month) throws BusinessException{
-		ResumoResponse resumo = new ResumoResponse();
 		List<Receitas> receitas = sh.getRegisters(receitasRepository.findAll(),
 				x -> x.getData().getYear() == year,
 				x -> x.getData().getMonthValue() == month);
