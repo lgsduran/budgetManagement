@@ -97,33 +97,19 @@ public class DespesasServiceImpl implements IDespesasService {
 		if (descricao.isPresent())
 			throw new BusinessException(format("Month %s already taken.", request.getData().getMonth()));
 		
-		Double totalReceitas = sh.getAmount(receitasRepository.findAll(),
-				sh.isMonthSavedReceita(request.getData().getMonthValue())
-						.and(sh.isYearSavedReceita(request.getData().getYear())),
-				x -> x.getValor());
-		
-		if (totalReceitas <= request.getValor())
-			throw new BusinessException(format("Despesa amount s% must be less than %s.", 
-					request.getValor(), totalReceitas));	
-		
-		Double totalDespesas = sh.getAmount(despesasRepository.findAll(),
-				sh.isMonthSavedDespesa(request.getData().getMonthValue())
-						.and(sh.isYearSavedDespesa(request.getData().getYear())),
-				x -> x.getValor());
-		
-		if (totalDespesas >= totalReceitas)
-			throw new BusinessException(format("Despesas' total amount must be less than %s.", totalReceitas));	
-		
-		 Optional<Despesas> despesaDB = Stream.of(id)
-				      .map(this.despesasRepository::findById)
-				      .findFirst().get();
+		Optional<Despesas> despesaDB = Stream.of(id)
+				     .map(this.despesasRepository::findById)
+				     .findFirst().get();
 		 
-		 if (despesaDB.isEmpty()) 
-			 throw new BusinessException(format("Id %s was not found.", id));				      
+		if (despesaDB.isEmpty()) 
+			throw new BusinessException(format("Id %s was not found.", id));	
 		 
-		 Despesas despesas = request.changeDespesas(despesaDB.get());
-		 log.info("Receita updated successfully.");
-		 return this.despesasRepository.save(despesas);
+		if (request.getCategoria() == null)
+			request.setCategoria(OUTRAS);
+		 
+		Despesas despesas = request.changeDespesas(despesaDB.get());
+		log.info("Receita updated successfully.");
+		return this.despesasRepository.save(despesas);
 	}
 
 	@Override

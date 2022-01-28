@@ -1,8 +1,9 @@
 package br.com.alura.budgetManagement.service;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,8 @@ public class ResumoImpl implements IResumo {
 		double receitaTotal = receitas.stream().mapToDouble(x -> x.getValor()).sum();
 		double despesaTotal = despesas.stream().mapToDouble(x -> x.getValor()).sum();
 		Map<CategoriaType, Double> categorias = despesas.stream().collect(
-				Collectors.groupingBy(Despesas::getCategoria, 
-						Collectors.summingDouble(Despesas::getValor)));
+				groupingBy(Despesas::getCategoria, 
+						summingDouble(Despesas::getValor)));
 		
 		resumo.setValor_total_das_receitas_no_mes(receitaTotal);
 		resumo.setValor_total_das_despesas_no_mes(despesaTotal);
