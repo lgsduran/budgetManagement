@@ -137,16 +137,24 @@ public class DespesasServiceImpl implements IDespesasService {
 	
 	@Override
 	public List<Despesas> listDespesasByDescricao(String descricao) throws BusinessException {
-		DescricaoDespesasType typeResult = null;
+		DescricaoDespesasType typeResult = null;		
 		for (DescricaoDespesasType type : allOf(DescricaoDespesasType.class)) {
-			if (type.getValue().equalsIgnoreCase(descricao))
+			if (type.getValue().equalsIgnoreCase(descricao)) {
 				typeResult = type;
+				break;
+			}			
 		}
 		
 		if (typeResult == null)
 			throw new BusinessException(format("Descricao %s was not found.", descricao));
 		
-		return this.despesasRepository.findAllByDescricao(typeResult);		
+		List<Despesas> descricaoList = this.despesasRepository.findAllByDescricao(typeResult);
+		
+		if (descricaoList.isEmpty()) {
+			throw new BusinessException(format("Descricao %s was not found in Database.", descricao));
+		}
+		
+		return descricaoList;	
 	}
 
 	@Override
