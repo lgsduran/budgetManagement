@@ -9,7 +9,7 @@ pipeline {
     stage('Test API') {
       steps {
         sh 'newman --version'
-        sh 'newman -u https://www.getpostman.com/collections/658854deae123990fbae'
+        sh 'newman run https://www.getpostman.com/collections/658854deae123990fbae'
       }
     }
   }
