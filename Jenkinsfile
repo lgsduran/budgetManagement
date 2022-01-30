@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-     name: postman/newman
+     name: 'postman/newman'
      args '--entrypoint='
     }
   }
