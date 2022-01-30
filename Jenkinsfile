@@ -9,7 +9,7 @@ pipeline {
     stage('Test API') {
       steps {
         sh 'newman --version'
-        sh 'newman run ./tests/Restful_Booker_Collection.postman_collection.json'
+        sh 'newman run ./Postman/Challenge Backend.postman_collection.json'
       }
     }
   }
