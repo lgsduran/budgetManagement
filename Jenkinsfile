@@ -4,7 +4,6 @@ pipeline {
      image 'postman/newman'
      args '--entrypoint='
      args '--ip addr show docker0'
-     args '--network=host'
     }
   }
   stages {
