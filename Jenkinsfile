@@ -3,7 +3,7 @@ pipeline {
     docker {
      image 'postman/newman'
      args '--entrypoint='
-     args '--add-host="localhost:192.168.0.XX"'
+     args '--add-host="localhost:192.168.0.1"'
     }
   }
   stages {
