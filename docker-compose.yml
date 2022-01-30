@@ -13,6 +13,6 @@ services:
       - alura-net
       
 networks:
-  mesttra-net:
+  alura-net:
     driver: bridge
     name: alura-net
