@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
      name: postman/newman
-     entrypoint: [""]
+     args '--entrypoint='
     }
   }
   stages {
