@@ -9,7 +9,7 @@ pipeline {
     stage('Test API') {
       steps {
         sh 'newman --version'
-        sh 'newman run ./Postman/Challenge Backend.postman_collection.json'
+        sh 'newman run /budgetManagement/Postman/Challenge Backend.postman_collection.json'
       }
     }
   }
