@@ -98,14 +98,21 @@ public class ReceitasServiceImpl implements IReceitasService {
 	public List<Receitas> listReceitasByDescricao(String descricao) throws BusinessException {
 		DescricaoReceitasType typeResult = null;
 		for (DescricaoReceitasType type : allOf(DescricaoReceitasType.class)) {
-			if (type.getValue().equalsIgnoreCase(descricao))
+			if (type.getValue().equalsIgnoreCase(descricao)) {
 				typeResult = type;
+				break;
+			}
 		}
 		
 		if (typeResult == null)
 			throw new BusinessException(format("Descricao %s was not found.", descricao));
 		
-		return this.receitasRepository.findAllByDescricao(typeResult);		
+		List<Receitas> receitasList = this.receitasRepository.findAllByDescricao(typeResult);
+		
+		if(receitasList.isEmpty())
+			throw new BusinessException(format("Descricao %s was not found in Database.", descricao));
+		
+		return receitasList;
 	}
 	
 	@Override
