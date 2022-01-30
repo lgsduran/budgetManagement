@@ -16,12 +16,12 @@ pipeline {
   post {
     success {
       echo 'The Pipeline success.'
-      sh 'docker rm newman'
+      sh 'docker image rm'
     }
     failure {
       script {
         echo 'The Pipeline failed.'
-        sh 'docker rm newman'
+        sh 'docker image rm'
       }
     }
   }
