@@ -8,6 +8,7 @@ pipeline {
   stages {
     stage('Test API') {
       steps {
+        sh 'docker run --network="host"'
         sh 'newman --version'
         sh 'newman run https://www.getpostman.com/collections/658854deae123990fbae'
       }
