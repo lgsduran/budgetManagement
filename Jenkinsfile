@@ -1,14 +1,15 @@
 pipeline {
   agent {
     docker {
-      image 'kasmweb/postman'
+     name: postman/newman
+     entrypoint: [""]
     }
   }
   stages {
     stage('Test API') {
       steps {
-        sh 'newman --version;'
-        sh 'newman run ./tests/Restful_Booker_Collection.postman_collection.json;'
+        sh 'newman --version'
+        sh 'newman run ./tests/Restful_Booker_Collection.postman_collection.json'
       }
     }
   }
