@@ -59,8 +59,8 @@ public class DespesasServiceImpl implements IDespesasService {
 				x -> x.getValor());
 		
 		if (totalReceitas <= request.getValor())
-			throw new BusinessException(format("Despesa amount s% must be less than %s.", 
-					request.getValor(), totalReceitas));	
+			throw new BusinessException(format("Receita current total amout is %s.", 
+					sh.customFormat(totalReceitas)));	
 		
 		Double totalDespesas = sh.getAmount(despesasRepository.findAll(),
 				sh.isMonthSavedDespesa(request.getData().getMonthValue())
@@ -68,7 +68,8 @@ public class DespesasServiceImpl implements IDespesasService {
 				x -> x.getValor());
 		
 		if (totalDespesas >= totalReceitas)
-			throw new BusinessException(format("Despesas' total amount must be less than %s.", totalReceitas));	
+			throw new BusinessException(format("Receita current total amout is %s.", 
+					sh.customFormat(totalReceitas)));
 		
 		log.info("Receita added successfully.");
 		return despesasRepository.save(request.toEntity());
@@ -155,8 +156,8 @@ public class DespesasServiceImpl implements IDespesasService {
 			throw new BusinessException(format("Year %s was not found.", year));
 		
 		List<Despesas> resultMonth = resultYear.stream()
-				   .filter(x -> x.getData().getMonthValue() == month)
-				   .collect(Collectors.toList());
+			   .filter(x -> x.getData().getMonthValue() == month)
+			   .collect(Collectors.toList());
 		
 		if (resultMonth.isEmpty())
 			throw new BusinessException(format("Month %s was not found.", month));

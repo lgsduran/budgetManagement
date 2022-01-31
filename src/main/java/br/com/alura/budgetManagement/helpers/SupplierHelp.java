@@ -1,5 +1,6 @@
 package br.com.alura.budgetManagement.helpers;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
@@ -34,6 +35,11 @@ public class SupplierHelp {
 	
 	public <T> List<T> getRegisters(List<T> list, Predicate<? super T> p1, Predicate<? super T> p2) {
 		return list.stream().filter(p1).filter(p2).collect(Collectors.toList());
+	}
+	
+	public String customFormat(double value) {
+		DecimalFormat df = new DecimalFormat("###,###.###");
+		return df.format(value);
 	}
 
 }
