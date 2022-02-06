@@ -27,17 +27,15 @@ import br.com.alura.budgetManagement.request.AddDespesaRequest;
 import br.com.alura.budgetManagement.request.AlterDespesaRequest;
 import br.com.alura.budgetManagement.response.Response;
 import br.com.alura.budgetManagement.service.DespesasServiceImpl;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/despesas")
 public class DespesasController {
 	
 	private DespesasServiceImpl despesasService;
 
-	public DespesasController(DespesasServiceImpl despesasService) {
-		this.despesasService = despesasService;
-	}
-	
 	@PostMapping
 	@ResponseStatus(CREATED)
 	public Despesas	addDespesas(@Valid @RequestBody AddDespesaRequest request) 

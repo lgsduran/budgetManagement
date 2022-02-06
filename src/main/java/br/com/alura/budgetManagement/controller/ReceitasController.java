@@ -27,16 +27,14 @@ import br.com.alura.budgetManagement.request.AddReceitaRequest;
 import br.com.alura.budgetManagement.request.AlterReceitaRequest;
 import br.com.alura.budgetManagement.response.Response;
 import br.com.alura.budgetManagement.service.ReceitasServiceImpl;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/receitas")
 public class ReceitasController {
 	
 	private ReceitasServiceImpl receitasService;
-
-	public ReceitasController(ReceitasServiceImpl receitasService) {
-		this.receitasService = receitasService;
-	}
 	
 	@PostMapping
 	@ResponseStatus(CREATED)

@@ -55,7 +55,7 @@ public class ResumoImpl implements IResumo {
 		
 		return builder()
 			.Valor_total_das_receitas_no_mes(receitaTotal)
-			.Valor_total_das_receitas_no_mes(despesaTotal)
+			.Valor_total_das_despesas_no_mes(despesaTotal)
 			.Saldo_final_no_mes(receitaTotal - despesaTotal)
 			.Categoria(categorias)
 			.build();
