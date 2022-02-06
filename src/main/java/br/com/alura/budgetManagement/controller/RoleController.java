@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alura.budgetManagement.entity.Role;
 import br.com.alura.budgetManagement.exception.BusinessException;
-import br.com.alura.budgetManagement.security.RoleServiceImpl;
+import br.com.alura.budgetManagement.service.RoleServiceImpl;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

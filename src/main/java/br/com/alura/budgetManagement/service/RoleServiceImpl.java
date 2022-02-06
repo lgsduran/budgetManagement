@@ -1,4 +1,4 @@
-package br.com.alura.budgetManagement.security;
+package br.com.alura.budgetManagement.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import br.com.alura.budgetManagement.entity.Role;
 import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.repository.RoleRepository;
-import br.com.alura.budgetManagement.service.IRoleService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

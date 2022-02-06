@@ -1,15 +1,16 @@
 package br.com.alura.budgetManagement.service;
 
-import org.springframework.http.ResponseEntity;
-
+import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.request.LoginRequest;
 import br.com.alura.budgetManagement.request.SignupRequest;
+import br.com.alura.budgetManagement.response.JwtResponse;
+import br.com.alura.budgetManagement.response.Response;
 
 public interface IAuthService {
 	
-	ResponseEntity<?> authenticateUser(LoginRequest loginRequest);
-
-	ResponseEntity<?> registerUser(SignupRequest signUpRequest);
+	JwtResponse authenticateUser(LoginRequest loginRequest);
+	
+	Response registerUser(SignupRequest signUpRequest) throws BusinessException;
 		
 
 }

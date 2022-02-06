@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.alura.budgetManagement.entity.Role;
 import br.com.alura.budgetManagement.entity.User;
+import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.repository.RoleRepository;
 import br.com.alura.budgetManagement.repository.UserRepository;
 import br.com.alura.budgetManagement.request.LoginRequest;
@@ -44,7 +44,7 @@ public class AuthServiceImpl implements IAuthService {
 	private JwtUtils jwtUtils;
 
 	@Override
-	public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
+	public JwtResponse authenticateUser(LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -55,19 +55,16 @@ public class AuthServiceImpl implements IAuthService {
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(
-				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles);
 	}
 
 	@Override
-	public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
-		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity.badRequest().body(new Response("Error: Username is already taken!"));
-		}
-
-		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity.badRequest().body(new Response("Error: Email is already in use!"));
-		}
+	public Response registerUser(SignupRequest signUpRequest) throws BusinessException {
+		if (userRepository.existsByUsername(signUpRequest.getUsername()))
+			throw new BusinessException("Error: Username is already taken!");
+		
+		if (userRepository.existsByEmail(signUpRequest.getEmail()))
+			throw new BusinessException("Error: Email is already in use!");
 
 		// Create new user's account
 		User user = new User(signUpRequest.getUsername(), signUpRequest.getEmail(),
@@ -96,7 +93,7 @@ public class AuthServiceImpl implements IAuthService {
 		user.setRoles(roles);
 		userRepository.save(user);
 
-		return ResponseEntity.ok(new Response("User registered successfully!"));
+		return new Response("User registered successfully!");
 
 	}
 
