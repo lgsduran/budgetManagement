@@ -1,6 +1,5 @@
 package br.com.alura.budgetManagement.service;
 
-import static br.com.alura.budgetManagement.response.ResumoResponse.builder;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.summingDouble;
 
@@ -53,11 +52,13 @@ public class ResumoImpl implements IResumo {
 				groupingBy(Despesas::getCategoria, 
 						summingDouble(Despesas::getValor)));
 		
-		return builder()
-			.Valor_total_das_receitas_no_mes(receitaTotal)
-			.Valor_total_das_despesas_no_mes(despesaTotal)
-			.Saldo_final_no_mes(receitaTotal - despesaTotal)
-			.Categoria(categorias)
-			.build();
+		ResumoResponse response = new ResumoResponse();
+		response.setValor_total_das_receitas_no_mes(receitaTotal);
+		response.setValor_total_das_despesas_no_mes(despesaTotal);
+		response.setSaldo_final_no_mes(receitaTotal - despesaTotal);
+		response.setCategoria(categorias);
+		
+		return response;
+
 	}
 }

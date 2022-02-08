@@ -5,11 +5,9 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.com.alura.budgetManagement.enums.CategoriaType;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-@Builder
+@Data
 @JsonPropertyOrder(alphabetic = false)
 public class ResumoResponse {
 	
