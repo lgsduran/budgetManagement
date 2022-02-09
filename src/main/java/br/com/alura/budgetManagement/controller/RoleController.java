@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.alura.budgetManagement.entity.Role;
 import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.service.RoleServiceImpl;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.AllArgsConstructor;
+
 
 @AllArgsConstructor
 @RestController
@@ -22,7 +24,7 @@ import lombok.AllArgsConstructor;
 public class RoleController {
 	
 	private RoleServiceImpl roleService;
-	
+	@Hidden
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public List<Role> addRoles(@Valid @RequestBody List<Role> role) throws BusinessException {

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,11 +28,13 @@ import br.com.alura.budgetManagement.request.AddReceitaRequest;
 import br.com.alura.budgetManagement.request.AlterReceitaRequest;
 import br.com.alura.budgetManagement.response.Response;
 import br.com.alura.budgetManagement.service.ReceitasServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/receitas")
+@SecurityRequirement(name = "bearerAuth")
 public class ReceitasController {
 	
 	private ReceitasServiceImpl receitasService;
@@ -57,7 +60,7 @@ public class ReceitasController {
 	}
 	
 	@GetMapping
-	public Page<Receitas> listReceitas(@Valid  @PageableDefault Pageable pageable) {
+	public Page<Receitas> listReceitas(@Valid  @ParameterObject @PageableDefault Pageable pageable) {
 		return this.receitasService.listReceitas(pageable);
 	}
 	

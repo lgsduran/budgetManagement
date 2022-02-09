@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,11 +28,13 @@ import br.com.alura.budgetManagement.request.AddDespesaRequest;
 import br.com.alura.budgetManagement.request.AlterDespesaRequest;
 import br.com.alura.budgetManagement.response.Response;
 import br.com.alura.budgetManagement.service.DespesasServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/despesas")
+@SecurityRequirement(name = "bearerAuth")
 public class DespesasController {
 	
 	private DespesasServiceImpl despesasService;
@@ -56,7 +59,7 @@ public class DespesasController {
 	}
 	
 	@GetMapping
-	public Page<Despesas> listDespesas(@Valid  @PageableDefault Pageable pageable) {
+	public Page<Despesas> listDespesas(@Valid  @ParameterObject @PageableDefault Pageable pageable) {
 		return this.despesasService.listDespesas(pageable);
 	}
 	

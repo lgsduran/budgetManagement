@@ -1,5 +1,7 @@
 package br.com.alura.budgetManagement.exception;
 
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -21,7 +23,7 @@ public class AuthEntryPointException implements AuthenticationEntryPoint {
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		logger.error("Unauthorized error: {}", authException.getMessage());
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+		response.sendError(SC_UNAUTHORIZED, "Error: Unauthorized");
 	}
 
 }

@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.alura.budgetManagement.exception.BusinessException;
 import br.com.alura.budgetManagement.response.ResumoResponse;
 import br.com.alura.budgetManagement.service.ResumoImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/resumo")
+@SecurityRequirement(name = "bearerAuth")
 public class ResumoController {
 	
 	private ResumoImpl resumoImpl;

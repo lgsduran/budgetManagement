@@ -38,7 +38,7 @@ public class SupplierHelp {
 	}
 	
 	public String customFormat(double value) {
-		DecimalFormat df = new DecimalFormat("###,###.##");
+		DecimalFormat df = new DecimalFormat("###.###,##");
 		return df.format(value);
 	}
 
