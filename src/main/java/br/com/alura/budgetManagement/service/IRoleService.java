@@ -9,4 +9,6 @@ public interface IRoleService {
 
 	List<Role> addRoles(List<Role> values) throws BusinessException;
 
+	List<Role> listRoles();
+
 }
