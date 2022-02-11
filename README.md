@@ -6,7 +6,7 @@
 [![Linkedin](https://i.stack.imgur.com/gVE0j.png) LinkedIn](https://www.linkedin.com/)
 &nbsp;
 
-This API project is a result of [Alura Challenge Back-End](https://www.alura.com.br/challenges/back-end-2) whose main propose was to manage a budget.
+This API project is a result of [Alura Challenge Back-End](https://www.alura.com.br/challenges/back-end-2) whose mainly propose was to manage a budget.
 
 ## Features
 
