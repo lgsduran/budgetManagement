@@ -10,7 +10,7 @@ This API project is a result of [Alura Challenge Back-End](https://www.alura.com
 
 ## Features
 
-- [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [Java 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 - [Spring Boot](https://spring.io/projects/spring-boot)
 - [Maven](https://maven.apache.org)
 - [MariaDB](https://mariadb.org)
