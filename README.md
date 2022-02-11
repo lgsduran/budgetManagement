@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/codecentric/springboot-sample-app.svg?branch=master)](https://travis-ci.org/codecentric/springboot-sample-app)
 [![Coverage Status](https://coveralls.io/repos/github/codecentric/springboot-sample-app/badge.svg?branch=master)](https://coveralls.io/github/codecentric/springboot-sample-app?branch=master)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![Linkedin](https://i.stack.imgur.com/gVE0j.png) LinkedIn Profile](www.linkedin.com/in/luiz-gustavo-duran-105a6557)
+[![Linkedin](https://i.stack.imgur.com/gVE0j.png) LinkedIn Profile](https://www.linkedin.com/in/luiz-gustavo-duran-105a6557/)
 &nbsp;
 
 This API project is a result of [Alura Challenge Back-End](https://www.alura.com.br/challenges/back-end-2) whose mainly propose was to manage a budget.
