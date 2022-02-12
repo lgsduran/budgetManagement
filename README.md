@@ -14,15 +14,8 @@ This API project is a result of [Alura Challenge Back-End](https://www.alura.com
 - [springdoc-openapi](https://springdoc.org)
 
 ## Deploying the application to AWS
-If you want to access the app, go to [OpenShift CLI](https://docs.openshift.org/latest/cli_reference/index.html):
+Click [here](http://budget-env.eba-tipzkj2s.sa-east-1.elasticbeanstalk.com/swagger-ui/index.html#/) to access the API.
 
-```shell
-oc new-app codecentric/springboot-maven3-centos~https://github.com/codecentric/springboot-sample-app
-```
-
-```shell
-oc expose springboot-sample-app --hostname=www.example.com
-```
 ## Sample User
 
 #### Request
