@@ -46,6 +46,8 @@ The project has been configured with a basic Swagger that exposes the commonly u
 
 ![ScreenShot](/images/openAPI3.png)
 
+Click **[here](http://budget-env.eba-tipzkj2s.sa-east-1.elasticbeanstalk.com/swagger-ui/index.html#/)** to be redirected to the documentation.
+
 ## Copyright
 
 Released under the Apache License 2.0. See the [LICENSE](https://github.com/codecentric/springboot-sample-app/blob/master/LICENSE) file.
