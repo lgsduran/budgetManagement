@@ -26,6 +26,29 @@ oc new-app codecentric/springboot-maven3-centos~https://github.com/codecentric/s
 ```shell
 oc expose springboot-sample-app --hostname=www.example.com
 ```
+## Sample User
+
+#### Request
+```json
+{
+   "username": "test",
+   "password":"123456"
+}
+```
+
+#### Response
+```json
+{
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiaWF0IjoxNjQ0Njc0NDc4LCJleHAiOjE2NDQ3NjA4Nzh9.dIz7oA0b8cuVWjHq-yjFfDA7hEaun3W3lrYdBqKRGdeZ239oq-1yLSt6SQceNWlAMxGm5vC0qg7XOghRO1iILw",
+    "type": "Bearer",
+    "id": 5,
+    "username": "test",
+    "email": "test@gmail.com",
+    "roles": [
+        "USER"
+    ]
+}
+```
 
 ## Copyright
 
