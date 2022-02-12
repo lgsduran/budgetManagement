@@ -51,7 +51,7 @@ oc expose springboot-sample-app --hostname=www.example.com
 
 ## Swagger Docs
 
-It helps to automate the generation of API documentation using spring boot projects.
+The project has been configured with a basic Swagger that exposes the commonly used API's along with the expected params.
 
 ![ScreenShot](/images/openAPI3.png)
 
