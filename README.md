@@ -14,7 +14,7 @@ This API project is a result of [Alura Challenge Back-End](https://www.alura.com
 - [springdoc-openapi](https://springdoc.org)
 
 ## Deploying the application to AWS
-Click [here](http://budget-env.eba-tipzkj2s.sa-east-1.elasticbeanstalk.com/swagger-ui/index.html#/) to access the API.
+Click **[here](http://budget-env.eba-tipzkj2s.sa-east-1.elasticbeanstalk.com/swagger-ui/index.html#/)** to access the API.
 
 ## Sample User
 
