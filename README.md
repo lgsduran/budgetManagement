@@ -1,7 +1,6 @@
 # Alura Challenge Back-End
 
 [![Build Status](https://travis-ci.org/codecentric/springboot-sample-app.svg?branch=master)](https://travis-ci.org/codecentric/springboot-sample-app)
-[![Coverage Status](https://coveralls.io/repos/github/codecentric/springboot-sample-app/badge.svg?branch=master)](https://coveralls.io/github/codecentric/springboot-sample-app?branch=master)
 [![License](http://img.shields.io/:license-apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 [![Linkedin](https://i.stack.imgur.com/gVE0j.png) LinkedIn Profile](https://www.linkedin.com/in/luiz-gustavo-duran-105a6557/)
 &nbsp;
@@ -49,6 +48,12 @@ oc expose springboot-sample-app --hostname=www.example.com
     ]
 }
 ```
+
+## Swagger Docs
+
+It helps to automate the generation of API documentation using spring boot projects.
+
+![ScreenShot](/images/openAPI3.png)
 
 ## Copyright
 
