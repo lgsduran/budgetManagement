@@ -7,8 +7,7 @@ pipeline {
   }
   stages {
     stage('Test API') {
-      steps {
-        
+      steps {        
         sh '''
              newman --version
              newman run https://www.getpostman.com/collections/baa168a892611f4be7b4
