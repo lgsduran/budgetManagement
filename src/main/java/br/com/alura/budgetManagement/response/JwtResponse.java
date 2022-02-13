@@ -4,7 +4,9 @@ import java.util.List;
 
 import lombok.Data;
 
-public @Data class JwtResponse {
+
+@Data
+public class JwtResponse {
 	private String token;
 	private String type = "Bearer";
 	private Long id;

@@ -6,65 +6,29 @@
 	},
 	"item": [
 		{
-			"name": "Receitas",
+			"name": "Auth",
 			"item": [
 				{
-					"name": "getReceitaById",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8082/receitas/3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"receitas",
-								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "AlterReceita",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"descricao\": \"OUTROS\",\r\n    \"valor\": 51.0,\r\n    \"data\": \"19-08-2022\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"name": "AddRoles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 400]);\r",
+									"});"
+								],
+								"type": "text/javascript"
 							}
-						},
-						"url": {
-							"raw": "http://localhost:8082/receitas/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"receitas",
-								"1"
-							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "AddReceitas",
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"descricao\":\"\",\r\n   \"valor\":\"10\",\r\n   \"data\":\"19-04-2021\"\r\n}",
+							"raw": "[\n   {\n      \"name\":\"STUDENT\"\n   },\n   {\n      \"name\":\"ADMIN\"\n   }\n]",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -72,29 +36,227 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8082/receitas",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/roles",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
-								"receitas"
+								"roles"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "ListReceitas",
+					"name": "AddUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Created successfully\", function () {\r",
+									"    if (pm.response.code === 200) {\r",
+									"        pm.environment.set(\"username\", pm.response.json().username)\r",
+									"        pm.environment.set(\"passwd\", pm.response.json().passwd)\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Falha ao obter o id\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"//Fist Name Generator\r",
+									"function firstName() {\r",
+									"\r",
+									"    var fistName = [\"Agda\", \"Andréia\", \"André\", \"Adriano\", \"Abinadar\", \"Alice\", \"Ariana\", \"Alencar\", \"Alcemir\", \"Aline\", \"Américo\", \"Ariane\", \"Bruno\", \"Bruna\", \"Beatriz\", \"Berenice\", \"Benedito\", \"Benedita\", \"Carlos\", \"Camila\", \"Caroline\", \"Camilo\", \"Ceverino\", \"Denis\", \"Denise\", \"Daniel\", \"Dorivaldo\", \"Darley\", \"Edson\", \"Eliane\", \"Eliana\", \"Ester\", \"Everaldo\", \"Elias\", \"Estenio\", \"Etevaldo\", \"Euclides\", \"Eliezer\", \"Everaldo\", \"Eduardo\", \"Emanuel\", \"Eunice\", \"Elaine\", \"Jaqueline\", \"Josivaldo\", \"josefina\", \"Larissa\", \"Laís\", \"Laercío\", \"Leandro\", \"Lucas\", \"Maria\", \"Marcos\", \"Melissa\", \"Marcelo\", \"Mariana\", \"Matheus\", \"Milena\", \"Neilson\", \"Naiara\", \"Nilson\", \"Nerivaldo\", \"Noemia\", \"Núbia\", \"Nilvan\", \"Olavo\", \"Oliver\", \"Olindo\", \"Paulo\", \"Paula\", \"Pedro\", \"Pedrina\", \"Pivanne\", \"Patrícia\", \"Quelvin\", \"Queila\", \"Ronaldo\", \"Ronan\", \"Romildo\", \"Rodolfo\", \"Rita\", \"Ravier\", \"Romã\", \"Salivan\", \"Selton\", \"Simirá\", \"Tadeu\", \"Taís\", \"Tamilá\", \"Tadeu\", \"Telma\", \"Ulisson\", \"Umberto\", \"Vicente\", \"Vanice\", \"Vera\", \"Valdermor\", \"Zulmira\", \"Zenira\"];\r",
+									"\r",
+									"    var randomItem = fistName[Math.floor(Math.random() * fistName.length)];\r",
+									"    return randomItem;\r",
+									"}\r",
+									"\r",
+									"var name = firstName();\r",
+									"\r",
+									"pm.environment.set('name', name);\r",
+									"\r",
+									"pm.environment.set('email', name+\"@gmail.com\");\r",
+									"\r",
+									"pm.environment.set('passwd', 1234);\r",
+									"\r",
+									"var roles = [\"USER\", \"ADMIN\"]\r",
+									"pm.environment.set(\"role\", roles[_.random(roles.length -1)]);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"username\":\"{{name}}\",\r\n   \"email\":\"{{email}}\",\r\n   \"password\":\"{{passwd}}\",\r\n   \"role\":[\r\n      \"{{role}}\"\r\n   ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8082/receitas",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/signup",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"signin successfully\", function () {\r",
+									"    if (pm.response.code === 201) {\r",
+									"        pm.environment.set(\"token\", pm.response.json().token)\r",
+									"    } else {\r",
+									"        pm.expect.fail(\"Falha ao obter o token\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"username\": \"{{name}}\",\r\n   \"password\":\"{{passwd}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:8082/signin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"signin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Receitas",
+			"item": [
+				{
+					"name": "AddReceitas",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function getReceita() {",
+									"    var receita = [\"SALARIO\",\"RENDA_EXTRA\",\"OUTROS\"];",
+									"    var randomItem = receita[Math.floor(Math.random() * receita.length)];",
+									"    return randomItem;",
+									"}",
+									"",
+									"var item = getReceita();",
+									"pm.environment.set(\"descricaoReceita\", item);",
+									"",
+									"var day = getNumber(_.random(1, 28));",
+									"var month = getNumber(_.random(1, 12))",
+									"pm.environment.set(\"receitaData\", day+\"-\"+month+\"-\"+\"2022\");",
+									"",
+									"pm.environment.set(\"day\", day);",
+									"pm.environment.set(\"month\", month);",
+									"pm.environment.set(\"year\", \"2022\");",
+									"",
+									"function getNumber(number) {",
+									"    return getlength(number) == 1 ? \"0\"+number: number;",
+									"}",
+									"",
+									"function getlength(number) {",
+									"    return number.toString().length;",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Created successfully\", function () {",
+									"    if (pm.response.code === 201) {",
+									"        pm.environment.set(\"receita_Id\", pm.response.json().id)",
+									"    } else {",
+									"        pm.expect.fail(\"Falha ao obter o id\");",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"descricao\":\"{{descricaoReceita}}\",\r\n   \"valor\":\"500\",\r\n   \"data\":\"{{receitaData}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:8082/receitas",
+							"host": [
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
@@ -106,20 +268,195 @@
 				},
 				{
 					"name": "ListReceitasByYearMonth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/receitas/2022/04",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/receitas/{{year}}/{{month}}",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
 								"receitas",
-								"2022",
-								"04"
+								"{{year}}",
+								"{{month}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getReceitaById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}:8082/receitas/{{receita_Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"receitas",
+								"{{receita_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AlterReceita",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var day = getNumber(_.random(1, 28));",
+									"var month = getNumber(_.random(1, 12))",
+									"pm.environment.set(\"receitaData\", day+\"-\"+month+\"-\"+\"2022\");",
+									"",
+									"function getNumber(number) {",
+									"    return getlength(number) == 1 ? \"0\"+number: number;",
+									"}",
+									"",
+									"function getlength(number) {",
+									"    return number.toString().length;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"{{descricaoReceita}}\",\r\n    \"valor\": 500,\r\n    \"data\": \"{{receitaData}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:8082/receitas/{{receita_Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"receitas",
+								"{{receita_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListReceitas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}:8082/receitas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"receitas"
 							]
 						}
 					},
@@ -127,14 +464,36 @@
 				},
 				{
 					"name": "ListReceitasByDescricao",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/receitas/descricao?descricao=OUTROS",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/receitas/descricao?descricao={{descricaoReceita}}",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
@@ -144,7 +503,7 @@
 							"query": [
 								{
 									"key": "descricao",
-									"value": "OUTROS"
+									"value": "{{descricaoReceita}}"
 								}
 							]
 						}
@@ -152,20 +511,127 @@
 					"response": []
 				},
 				{
-					"name": "DeleteReceita",
+					"name": "AddReceitasToDelete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function getReceita() {",
+									"    var receita = [\"SALARIO\",\"RENDA_EXTRA\",\"OUTROS\"];",
+									"    var randomItem = receita[Math.floor(Math.random() * receita.length)];",
+									"    return randomItem;",
+									"}",
+									"",
+									"var item = getReceita();",
+									"",
+									"var day = getNumber(_.random(1, 28));",
+									"var month = getNumber(_.random(1, 12))",
+									"pm.environment.set(\"receitaData\", day+\"-\"+month+\"-\"+\"2022\");",
+									"",
+									"pm.environment.set(\"day\", day);",
+									"pm.environment.set(\"month\", month);",
+									"pm.environment.set(\"year\", \"2022\");",
+									"",
+									"function getNumber(number) {",
+									"    return getlength(number) == 1 ? \"0\"+number: number;",
+									"}",
+									"",
+									"function getlength(number) {",
+									"    return number.toString().length;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Created successfully\", function () {",
+									"    if (pm.response.code === 201) {",
+									"        pm.environment.set(\"despesa_Id\", pm.response.json().id)",
+									"    } else {",
+									"        pm.expect.fail(\"Falha ao obter o id\");",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"descricao\":\"{{descricaoReceita}}\",\r\n   \"valor\":\"2000\",\r\n   \"data\":\"{{receitaData}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:8082/receitas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"receitas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteReceita",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/receitas/6",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/receitas/{{receita_Id}}",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
 								"receitas",
-								"6"
+								"{{receita_Id}}"
 							]
 						}
 					},
@@ -177,62 +643,82 @@
 			"name": "Despesas",
 			"item": [
 				{
-					"name": "getDespesaById",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8082/despesas/2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"despesas",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "AlterDespesa",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"descricao\": \"LUZ\",\r\n    \"valor\": 51.0,\r\n    \"data\": \"19-04-2012\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+					"name": "AddDespesas",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function getDespesa() {",
+									"    var despesa = [\"ALUGUEL\",\"PRESTACAO_CARRO\",\"AGUA\",\"LUZ\",\"INTERNET\",\"CELULAR\"];",
+									"    var randomItem = despesa[Math.floor(Math.random() * despesa.length)];",
+									"    return randomItem;",
+									"}",
+									"",
+									"var item = getDespesa();",
+									"pm.environment.set(\"descricaoDespesa\", item);",
+									"",
+									"function getCategoria() {",
+									"    var categoria = [\"ALIMENTACAO\",\"SAUDE\",\"MORADIA\",\"EDUCACAO\",\"LAZER\",\"IMPREVISTOS\",\"OUTRAS\",\"NULL\"];",
+									"    var randomItem = categoria[Math.floor(Math.random() * categoria.length)];",
+									"    return randomItem;",
+									"}",
+									"",
+									"var categ = getCategoria();",
+									"pm.environment.set(\"descricaoCategoria\", categ);",
+									"",
+									"var day = getNumber(_.random(1, 28));",
+									"var month = getNumber(_.random(1, 12))",
+									"pm.environment.set(\"despesaData\", day+\"-\"+month+\"-\"+\"2022\");",
+									"",
+									"pm.environment.set(\"day\", day);",
+									"pm.environment.set(\"month\", month);",
+									"pm.environment.set(\"year\", \"2022\");",
+									"",
+									"function getNumber(number) {",
+									"    return getlength(number) == 1 ? \"0\"+number: number;",
+									"}",
+									"",
+									"function getlength(number) {",
+									"    return number.toString().length;",
+									"}",
+									""
+								],
+								"type": "text/javascript"
 							}
 						},
-						"url": {
-							"raw": "http://localhost:8082/despesas/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"despesas",
-								"1"
-							]
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Created successfully\", function () {",
+									"    if (pm.response.code === 201) {",
+									"        pm.environment.set(\"despesa_Id\", pm.response.json().id)",
+									"    } else {",
+									"        pm.expect.fail(\"Falha ao obter o id\");",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "AddDespesas",
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n   \"descricao\":\"ALUGUEL\",\r\n   \"valor\":\"10\",\r\n   \"data\":\"18-03-2022\",\r\n   \"categoria\":\"\"\r\n}",
+							"raw": "{\r\n   \"descricao\":\"{{descricaoDespesa}}\",\r\n   \"valor\":50.0,\r\n   \"data\":\"{{receitaData}}\",\r\n   \"categoria\":{{descricaoCategoria}}\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -240,10 +726,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8082/despesas",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/despesas",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
@@ -254,15 +739,323 @@
 					"response": []
 				},
 				{
-					"name": "ListDespesas",
+					"name": "ListDespesasByYearMonth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/despesas",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/despesas/{{year}}/{{month}}",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"despesas",
+								"{{year}}",
+								"{{month}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AlterDespesa",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var day = getNumber(_.random(1, 28));",
+									"var month = getNumber(_.random(1, 12))",
+									"pm.environment.set(\"receitaData\", day+\"-\"+month+\"-\"+\"2022\");",
+									"",
+									"function getNumber(number) {",
+									"    return getlength(number) == 1 ? \"0\"+number: number;",
+									"}",
+									"",
+									"function getlength(number) {",
+									"    return number.toString().length;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\": \"{{descricaoDespesa}}\",\r\n    \"valor\": 91,\r\n    \"data\": \"{{receitaData}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:8082/despesas/{{despesa_Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"despesas",
+								"{{despesa_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getDespesaById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}:8082/despesas/{{despesa_Id}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"despesas",
+								"{{despesa_Id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListDespesas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}:8082/despesas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"despesas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListDespesasByDescricao",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}:8082/despesas/descricao?descricao={{descricaoDespesa}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"port": "8082",
+							"path": [
+								"despesas",
+								"descricao"
+							],
+							"query": [
+								{
+									"key": "descricao",
+									"value": "{{descricaoDespesa}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddDespesasToDelete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function getDespesa() {",
+									"    var despesa = [\"ALUGUEL\",\"PRESTACAO_CARRO\",\"AGUA\",\"LUZ\",\"INTERNET\",\"CELULAR\"];",
+									"    var randomItem = despesa[Math.floor(Math.random() * despesa.length)];",
+									"    return randomItem;",
+									"}",
+									"",
+									"var item = getDespesa();",
+									"pm.environment.set(\"descricaoDespesa\", item);",
+									"",
+									"function getCategoria() {",
+									"    var categoria = [\"ALIMENTACAO\",\"SAUDE\",\"MORADIA\",\"EDUCACAO\",\"LAZER\",\"IMPREVISTOS\",\"OUTRAS\",\"NULL\"];",
+									"    var randomItem = categoria[Math.floor(Math.random() * categoria.length)];",
+									"    return randomItem;",
+									"}",
+									"",
+									"var categ = getCategoria();",
+									"pm.environment.set(\"descricaoCategoria\", categ);",
+									"",
+									"var day = getNumber(_.random(1, 28));",
+									"var month = getNumber(_.random(1, 12))",
+									"pm.environment.set(\"despesaData\", day+\"-\"+month+\"-\"+\"2022\");",
+									"",
+									"pm.environment.set(\"day\", day);",
+									"pm.environment.set(\"month\", month);",
+									"pm.environment.set(\"year\", \"2022\");",
+									"",
+									"function getNumber(number) {",
+									"    return getlength(number) == 1 ? \"0\"+number: number;",
+									"}",
+									"",
+									"function getlength(number) {",
+									"    return number.toString().length;",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Created successfully\", function () {",
+									"    if (pm.response.code === 201) {",
+									"        pm.environment.set(\"despesa_Id\", pm.response.json().id)",
+									"    } else {",
+									"        pm.expect.fail(\"Falha ao obter o id\");",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"descricao\":\"{{descricaoDespesa}}\",\r\n   \"valor\":5,\r\n   \"data\":\"{{despesaData}}\",\r\n   \"categoria\":\"ALIMENTACAO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}:8082/despesas",
+							"host": [
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
@@ -275,65 +1068,27 @@
 				{
 					"name": "DeleteDespesa",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/despesas/2",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/despesas/{{despesa_Id}}",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
 								"despesas",
-								"2"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ListDespesasByDescricao",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8082/despesas/descricao?descricao=ALUGUEL",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"despesas",
-								"descricao"
-							],
-							"query": [
-								{
-									"key": "descricao",
-									"value": "ALUGUEL"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "ListDespesasByYearMonth",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8082/despesas/2022/04",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8082",
-							"path": [
-								"despesas",
-								"2022",
-								"04"
+								"{{despesa_Id}}"
 							]
 						}
 					},
@@ -347,19 +1102,28 @@
 				{
 					"name": "Resumo",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8082/resumo/2022/10",
-							"protocol": "http",
+							"raw": "{{baseUrl}}:8082/resumo/{{year}}/{{month}}",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
 							"port": "8082",
 							"path": [
 								"resumo",
-								"2022",
-								"10"
+								"{{year}}",
+								"{{month}}"
 							]
 						}
 					},

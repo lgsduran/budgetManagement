@@ -38,13 +38,6 @@ public @Data class UserDetailsImpl implements UserDetails {
 		List<SimpleGrantedAuthority> authorities = user.getRoles()
 		.stream().map(role -> new SimpleGrantedAuthority(role.getName().name()))
 				.collect(Collectors.toList());
-//		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//
-//		user.getRoles().forEach(main -> {
-//			main.getNames().forEach(role -> {
-//				authorities.add(new SimpleGrantedAuthority(role.name()));
-//			});
-//		});			
 
 		return new UserDetailsImpl(
 				user.getId(), 
